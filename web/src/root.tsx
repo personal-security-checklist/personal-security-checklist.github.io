@@ -28,6 +28,15 @@ export default component$(() => {
         <link rel="manifest" href={`${baseUrl}manifest.json`} />
         <RouterHead />
         <ServiceWorkerRegister />
+        <script dangerouslySetInnerHTML={`
+          (function() {
+            var params = new URLSearchParams(window.location.search);
+            var p = params.get('p');
+            if (p) {
+              window.history.replaceState(null, null, p);
+            }
+          })();
+        `} />
       </head>
       <body lang="en" data-theme="dark" class="flex flex-col justify-between min-h-screen">
         <RouterOutlet />

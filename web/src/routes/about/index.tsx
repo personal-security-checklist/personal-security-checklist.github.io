@@ -20,22 +20,26 @@ export default component$(() => {
     return marked.parse(text || '', { async: false }) as string || '';
   };
 
+  const fetchJson = async (url: string): Promise<Contributor[]> => {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        return [];
+      }
+      return await response.json();
+    } catch {
+      return [];
+    }
+  };
+
   const contributorsResource = useResource$<Contributor[]>(async () => {
     const url = 'https://api.github.com/repos/lissy93/personal-security-checklist/contributors?per_page=100';
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error('Failed to fetch contributors');
-    }
-    return await response.json();
+    return await fetchJson(url);
   });
 
   const sponsorsResource = useResource$<Contributor[]>(async () => {
     const url = 'https://github-sponsors.as93.workers.dev/lissy93';
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error('Failed to fetch sponsors');
-    }
-    return await response.json();
+    return await fetchJson(url);
   });
 
 
@@ -72,26 +76,28 @@ export default component$(() => {
               value={sponsorsResource}
               onPending={() => <p>Loading...</p>}
               onResolved={(contributors: Contributor[]) => (
-                contributors.map((contributor: Contributor) => (
-                  <a
-                    class="w-16 tooltip tooltip-bottom"
-                    href={contributor.html_url || `https://github.com/${contributor.login}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    key={contributor.login}
-                    data-tip={`Thank you @${contributor.login}`}
-                  >
-                    <img
-                      class="avatar rounded"
-                      width="64" height="64"
-                      src={contributor.avatar_url || contributor.avatarUrl}
-                      alt={contributor.login}
-                    />
-                    <p
-                      class="text-ellipsis overflow-hidden w-max-16 mx-auto line-clamp-2"
-                    >{contributor.name || contributor.login}</p>
-                  </a>
-                ))
+                contributors.length ? (
+                  contributors.map((contributor: Contributor) => (
+                    <a
+                      class="w-16 tooltip tooltip-bottom"
+                      href={contributor.html_url || `https://github.com/${contributor.login}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      key={contributor.login}
+                      data-tip={`Thank you @${contributor.login}`}
+                    >
+                      <img
+                        class="avatar rounded"
+                        width="64" height="64"
+                        src={contributor.avatar_url || contributor.avatarUrl}
+                        alt={contributor.login}
+                      />
+                      <p
+                        class="text-ellipsis overflow-hidden w-max-16 mx-auto line-clamp-2"
+                      >{contributor.name || contributor.login}</p>
+                    </a>
+                  ))
+                ) : <p>Sponsor data is temporarily unavailable.</p>
               )}
             />
           </div>
@@ -108,26 +114,28 @@ export default component$(() => {
             value={contributorsResource}
             onPending={() => <p>Loading...</p>}
             onResolved={(contributors: Contributor[]) => (
-              contributors.map((contributor: Contributor) => (
-                <a
-                  class="w-16 tooltip tooltip-bottom"
-                  href={contributor.html_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  key={contributor.login}
-                  data-tip={`@${contributor.login} has contributed ${contributor.contributions} times\n\nClick to view their profile`}
-                >
-                  <img
-                    class="avatar rounded"
-                    width="64" height="64"
-                    src={contributor.avatar_url}
-                    alt={contributor.login}
-                  />
-                  <p
-                    class="text-ellipsis overflow-hidden w-max-16 mx-auto"
-                  >{contributor.login}</p>
-                </a>
-              ))
+              contributors.length ? (
+                contributors.map((contributor: Contributor) => (
+                  <a
+                    class="w-16 tooltip tooltip-bottom"
+                    href={contributor.html_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    key={contributor.login}
+                    data-tip={`@${contributor.login} has contributed ${contributor.contributions} times\n\nClick to view their profile`}
+                  >
+                    <img
+                      class="avatar rounded"
+                      width="64" height="64"
+                      src={contributor.avatar_url}
+                      alt={contributor.login}
+                    />
+                    <p
+                      class="text-ellipsis overflow-hidden w-max-16 mx-auto"
+                    >{contributor.login}</p>
+                  </a>
+                ))
+              ) : <p>Contributor data is temporarily unavailable.</p>
             )}
           />
         </div>

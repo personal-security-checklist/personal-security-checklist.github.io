@@ -3,7 +3,7 @@
 <p align="center">
 <b><i>The ultimate list of tips to secure your digital life</i></b>
 <br />
-<b>🌐 <a href="https://digital-defense.io/">digital-defense.io</a></b><br />
+<b>🌐 <a href="https://personal-security-checklist.github.io/">personal-security-checklist.github.io</a></b><br />
 <br />
 <a href="https://personal-security-checklist.as93.net"><img src="https://i.ibb.co/Rb6P6h6/shield.png" width="64" /><br /></a>
 <br />
@@ -34,7 +34,7 @@ You can read the full checklist in [`CHECKLIST.md`](https://github.com/Lissy93/p
 
 ## The Website
 
-The easiest method for consuming the checklist is via our website: **[digital-defense.io](https://digital-defense.io/)**
+The easiest method for consuming the checklist is via our website: **[personal-security-checklist.github.io](https://personal-security-checklist.github.io/)**
 
 Here you can browse lists, filter by your threat model and tick items off once complete (plus, there are pretty charts to make you feel good about your progress ☺️).
 
@@ -65,12 +65,12 @@ Alternatively, fork the repo and import it into your providers' dashboard. Or us
 
 ## The API
 
-We also make all the data available via a free API, which you can use however you wish.
+In deployments that include the backend, the checklist data is also available via a free API.
 
 ### Usage
 All endpoints are documented in our OpenAPI spec, you can view these and try them out via our [Swagger docs]().
 
-Base: digital-defense.io/api
+The GitHub Pages deployment at `personal-security-checklist.github.io` is static-only and does not expose the API routes below.
 
 /api/checklists
 /api/checklists/[name-or-index]
@@ -178,4 +178,3 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
               |     /          |     /     ~-.     ~- _
               |_____|          |_____|         ~ - . _ _~_-_
 -->
-

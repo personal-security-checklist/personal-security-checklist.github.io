@@ -480,7 +480,7 @@ Autenticação forte, dispositivos criptografados, software corrigido e navegaç
 ----
 
 #### Existe uma versão interativa!
-- [Digital Defense](https://digital-defense.io) - Veja detalhes, marque itens e acompanhe seu progresso
+- [Personal Security Checklist](https://personal-security-checklist.github.io) - Veja detalhes, marque itens e acompanhe seu progresso
 
 #### Outras listas incríveis de segurança
 - @sbilly/[awesome-security](https://github.com/sbilly/awesome-security)

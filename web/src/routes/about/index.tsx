@@ -8,13 +8,25 @@ import { marked } from "marked";
 interface Contributor {
   login: string;
   avatar_url: string;
-  avatarUrl: string;
   html_url: string;
   contributions: number;
+}
+
+interface Sponsor {
+  login: string;
+  avatar_url: string;
+  html_url: string;
   name: string;
 }
 
-const fetchJson = async (url: string): Promise<Contributor[]> => {
+interface RawSponsor {
+  login: string;
+  avatarUrl: string;
+  html_url: string;
+  name: string;
+}
+
+const fetchJson = async <T,>(url: string): Promise<T[]> => {
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -34,12 +46,18 @@ export default component$(() => {
 
   const contributorsResource = useResource$<Contributor[]>(async () => {
     const url = 'https://api.github.com/repos/lissy93/personal-security-checklist/contributors?per_page=100';
-    return await fetchJson(url);
+    return await fetchJson<Contributor>(url);
   });
 
-  const sponsorsResource = useResource$<Contributor[]>(async () => {
+  const sponsorsResource = useResource$<Sponsor[]>(async () => {
     const url = 'https://github-sponsors.as93.workers.dev/lissy93';
-    return await fetchJson(url);
+    const sponsors = await fetchJson<RawSponsor>(url);
+    return sponsors.map((sponsor) => ({
+      login: sponsor.login,
+      avatar_url: sponsor.avatarUrl,
+      html_url: sponsor.html_url,
+      name: sponsor.name,
+    }));
   });
 
 
@@ -75,26 +93,26 @@ export default component$(() => {
           <Resource
               value={sponsorsResource}
               onPending={() => <p>Loading...</p>}
-              onResolved={(contributors: Contributor[]) => (
-                contributors.length ? (
-                  contributors.map((contributor: Contributor) => (
+              onResolved={(sponsors: Sponsor[]) => (
+                sponsors.length ? (
+                  sponsors.map((sponsor: Sponsor) => (
                     <a
                       class="w-16 tooltip tooltip-bottom"
-                      href={contributor.html_url || `https://github.com/${contributor.login}`}
+                      href={sponsor.html_url || `https://github.com/${sponsor.login}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      key={contributor.login}
-                      data-tip={`Thank you @${contributor.login}`}
+                      key={sponsor.login}
+                      data-tip={`Thank you @${sponsor.login}`}
                     >
                       <img
                         class="avatar rounded"
                         width="64" height="64"
-                        src={contributor.avatar_url || contributor.avatarUrl}
-                        alt={contributor.login}
+                        src={sponsor.avatar_url}
+                        alt={sponsor.login}
                       />
                       <p
                         class="text-ellipsis overflow-hidden w-max-16 mx-auto line-clamp-2"
-                      >{contributor.name || contributor.login}</p>
+                      >{sponsor.name || sponsor.login}</p>
                     </a>
                   ))
                 ) : <p>Sponsor data is temporarily unavailable.</p>

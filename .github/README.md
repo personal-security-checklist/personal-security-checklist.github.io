@@ -65,12 +65,12 @@ Alternatively, fork the repo and import it into your providers' dashboard. Or us
 
 ## The API
 
-We also make all the data available via a free API, which you can use however you wish.
+In deployments that include the backend, the checklist data is also available via a free API.
 
 ### Usage
 All endpoints are documented in our OpenAPI spec, you can view these and try them out via our [Swagger docs]().
 
-Base: personal-security-checklist.github.io/api
+The GitHub Pages deployment at `personal-security-checklist.github.io` is static-only and does not expose the API routes below.
 
 /api/checklists
 /api/checklists/[name-or-index]

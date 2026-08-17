@@ -12,7 +12,7 @@ export default extendConfig(baseConfig, () => {
     },
     plugins: [
       staticAdapter({
-        origin: "https://mariojp.github.io/personal-security-checklist-pt-br",
+        origin: "https://personal-security-checklist.github.io",
         exclude: ["/article/*"],
       }),
     ],

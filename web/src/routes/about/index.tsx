@@ -5,31 +5,31 @@ import Icon from "~/components/core/icon";
 import { projects, socials, intro, contributing, license } from './about-content';
 import { marked } from "marked";
 
-export default component$(() => {
+interface Contributor {
+  login: string;
+  avatar_url: string;
+  avatarUrl: string;
+  html_url: string;
+  contributions: number;
+  name: string;
+}
 
-  interface Contributor {
-    login: string;
-    avatar_url: string;
-    avatarUrl: string;
-    html_url: string;
-    contributions: number;
-    name: string;
+const fetchJson = async (url: string): Promise<Contributor[]> => {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      return [];
+    }
+    return await response.json();
+  } catch {
+    return [];
   }
+};
+
+export default component$(() => {
 
   const parseMarkdown = (text: string | undefined): string => {
     return marked.parse(text || '', { async: false }) as string || '';
-  };
-
-  const fetchJson = async (url: string): Promise<Contributor[]> => {
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        return [];
-      }
-      return await response.json();
-    } catch {
-      return [];
-    }
   };
 
   const contributorsResource = useResource$<Contributor[]>(async () => {
